@@ -1,5 +1,3 @@
-from time import sleep
-
 import cv2
 import pyautogui
 import numpy as np
@@ -37,7 +35,7 @@ def find_deductive_safe_moves(board):
         for col in range(cols):
             cell_value = board[row, col]
 
-            # Skip completely safe (unclickable) squares (9), as they are not actionable
+            # Skip unclickable squares (9), as they are not actionable
             if cell_value == 9:
                 continue
 
@@ -46,7 +44,7 @@ def find_deductive_safe_moves(board):
                 neighbors = get_neighbors(row, col, rows, cols)
 
                 # Find unknown, bonus, and flagged neighbors
-                unknown_cells = [(r, c) for r, c in neighbors if board[r, c] == 0 or board[r, c] == 7 or board[r, c] == 8]
+                unknown_cells = [(r, c) for r, c in neighbors if board[r, c] == 0 or board[r, c] in [7, 8]]
                 flagged_cells = sum(1 for r, c in neighbors if board[r, c] == 6)
 
                 # Deductive rules for safe and flag moves
@@ -54,17 +52,17 @@ def find_deductive_safe_moves(board):
                     # All remaining unknown neighbors must be safe
                     for r, c in unknown_cells:
                         if (r, c) not in safe_moves and (r, c) not in bonus_safe_moves:
-                            # Check if the cell is a bonus cell (7 or 8) and store it separately if so
-                            if board[r, c] == 7 or board[r, c] == 8:
+                            if board[r, c] in [7, 8]:
                                 bonus_safe_moves.append((r, c))
                             else:
                                 safe_moves.append((r, c))
                 elif cell_value - flagged_cells == len(unknown_cells):
-                    # All remaining unknown neighbors must be mines
-                    flag_moves.extend([(r, c) for r, c in unknown_cells if (r, c) not in flag_moves])
+                    # Flag moves only if all remaining unknowns are guaranteed to be mines
+                    for r, c in unknown_cells:
+                        if (r, c) not in flag_moves:
+                            flag_moves.append((r, c))
 
     return safe_moves, flag_moves, bonus_safe_moves
-
 
 def next_move(board):
     # First pass: look for deductive moves
@@ -92,9 +90,17 @@ def next_move(board):
 
     propagate_safe_moves()
 
-    # If there are flag moves, return all flag moves as a list of actions
+    # If there are flag moves, return all flag moves as a list of actions only if certainty exists
     if flag_moves:
-        return [('flag', r, c) for r, c in flag_moves]
+        confirmed_flags = []
+        for r, c in flag_moves:
+            neighbors = get_neighbors(r, c, board.shape[0], board.shape[1])
+            surrounding_flags = sum(1 for nr, nc in neighbors if board[nr, nc] == 6)
+            uncovered_count = sum(1 for nr, nc in neighbors if board[nr, nc] in range(1, 6))
+            if surrounding_flags + uncovered_count >= 1:
+                confirmed_flags.append(('flag', r, c))
+        if confirmed_flags:
+            return confirmed_flags
 
     # If there are bonus safe moves (7 or 8), return all of them as click actions
     if bonus_safe_moves:
@@ -103,22 +109,41 @@ def next_move(board):
     # If there are no flags or bonus moves, but other safe moves are available, return all safe moves as click actions
     if safe_moves:
         # Filter out any completely safe (9) cells, keeping only unknown (0) cells or cells with values 7 and 8
-        safe_clicks = [(r, c) for r, c in safe_moves if board[r, c] == 0 or board[r, c] == 7 or board[r, c] == 8]
+        safe_clicks = [(r, c) for r, c in safe_moves if board[r, c] == 0 or board[r, c] in [7, 8]]
         if safe_clicks:
             return [('click', r, c) for r, c in safe_clicks]
 
-    # If no definitive moves are found, choose a backup cell to "guess"
-    guess_cells = [(row, col) for row in range(board.shape[0]) for col in range(board.shape[1])
-                   if board[row, col] in [0, 7, 8]]
+    # If no definitive moves are found, choose a cell to "guess" with prioritization
+    # First, prioritize cells with 7, then 8, then cells adjacent to uncovered cells
 
-    if guess_cells:
-        r, c = guess_cells[0]  # Select the first available cell as a guess
+    # Priority 1: Look for cells with value 7 to guess
+    guess_cells_7 = [(row, col) for row in range(board.shape[0]) for col in range(board.shape[1]) if board[row, col] == 7]
+    if guess_cells_7:
+        r, c = guess_cells_7[0]  # Choose the first cell with 7 found
+        return [('guess', r, c)]
+
+    # Priority 2: Look for cells with value 8 to guess if no 7 cells are available
+    guess_cells_8 = [(row, col) for row in range(board.shape[0]) for col in range(board.shape[1]) if board[row, col] == 8]
+    if guess_cells_8:
+        r, c = guess_cells_8[0]  # Choose the first cell with 8 found
+        return [('guess', r, c)]
+
+    # Priority 3: Choose cells adjacent to already uncovered cells if no 7 or 8 cells are available
+    adjacent_guesses = []
+    for row in range(board.shape[0]):
+        for col in range(board.shape[1]):
+            if 1 <= board[row, col] <= 5:
+                neighbors = get_neighbors(row, col, board.shape[0], board.shape[1])
+                for r, c in neighbors:
+                    if board[r, c] == 0 and (r, c) not in adjacent_guesses:
+                        adjacent_guesses.append((r, c))
+
+    if adjacent_guesses:
+        r, c = adjacent_guesses[0]
         return [('guess', r, c)]
 
     # No moves found, game likely finished or no deductive moves remain
     return None
-
-
 
 def click_cell(action, row, col, top_left_corner):
     if action == None:
@@ -129,7 +154,6 @@ def click_cell(action, row, col, top_left_corner):
     y = top_left_corner[1] + row * (CELL_SIZE + CELL_SPACING) + CELL_SIZE // 2
 
     pyautogui.moveTo(x, y)
-    sleep(0.1)
     # Perform the click
     if action == "click":
         pyautogui.click(x, y)
@@ -165,9 +189,9 @@ def main_loop():
         if moves and moves[0][0] != 'guess':
             for move, row, col in moves:
                 click_cell(move, row, col, top_left_corner)
+                print(f"Performing action: {move} at ({row}, {col})")
         else:
-
-            if try_count > 3:
+            if try_count > 2:
                 if moves is not None and moves[0][0] == 'guess':
                     pyautogui.press('1')
                     click_cell("click", moves[0][1], moves[0][2], top_left_corner)
