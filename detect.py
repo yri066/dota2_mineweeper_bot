@@ -7,7 +7,7 @@ from skimage.metrics import structural_similarity as ssim
 CELL_SIZE = 34  # Cell size in pixels
 CELL_SPACING = 2  # Space between cells
 OFFSET = 3  # Offset to center the grid
-SSIM_THRESHOLD = 0.5  # SSIM threshold to consider two images as identical
+SSIM_THRESHOLD = 0.6  # SSIM threshold to consider two images as identical
 
 IMAGE_DIR = "images"
 

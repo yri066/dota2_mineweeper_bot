@@ -116,31 +116,31 @@ def next_move(board):
     # If no definitive moves are found, choose a cell to "guess" with prioritization
     # First, prioritize cells with 7, then 8, then cells adjacent to uncovered cells
 
-    # Priority 1: Look for cells with value 7 to guess
-    guess_cells_7 = [(row, col) for row in range(board.shape[0]) for col in range(board.shape[1]) if board[row, col] == 7]
-    if guess_cells_7:
-        r, c = guess_cells_7[0]  # Choose the first cell with 7 found
-        return [('guess', r, c)]
-
-    # Priority 2: Look for cells with value 8 to guess if no 7 cells are available
-    guess_cells_8 = [(row, col) for row in range(board.shape[0]) for col in range(board.shape[1]) if board[row, col] == 8]
-    if guess_cells_8:
-        r, c = guess_cells_8[0]  # Choose the first cell with 8 found
-        return [('guess', r, c)]
-
-    # Priority 3: Choose cells adjacent to already uncovered cells if no 7 or 8 cells are available
-    adjacent_guesses = []
-    for row in range(board.shape[0]):
-        for col in range(board.shape[1]):
-            if 1 <= board[row, col] <= 5:
-                neighbors = get_neighbors(row, col, board.shape[0], board.shape[1])
-                for r, c in neighbors:
-                    if board[r, c] == 0 and (r, c) not in adjacent_guesses:
-                        adjacent_guesses.append((r, c))
-
-    if adjacent_guesses:
-        r, c = adjacent_guesses[0]
-        return [('guess', r, c)]
+    # # Priority 1: Look for cells with value 7 to guess
+    # guess_cells_7 = [(row, col) for row in range(board.shape[0]) for col in range(board.shape[1]) if board[row, col] == 7]
+    # if guess_cells_7:
+    #     r, c = guess_cells_7[0]  # Choose the first cell with 7 found
+    #     return [('guess', r, c)]
+    #
+    # # Priority 2: Look for cells with value 8 to guess if no 7 cells are available
+    # guess_cells_8 = [(row, col) for row in range(board.shape[0]) for col in range(board.shape[1]) if board[row, col] == 8]
+    # if guess_cells_8:
+    #     r, c = guess_cells_8[0]  # Choose the first cell with 8 found
+    #     return [('guess', r, c)]
+    #
+    # # Priority 3: Choose cells adjacent to already uncovered cells if no 7 or 8 cells are available
+    # adjacent_guesses = []
+    # for row in range(board.shape[0]):
+    #     for col in range(board.shape[1]):
+    #         if 1 <= board[row, col] <= 5:
+    #             neighbors = get_neighbors(row, col, board.shape[0], board.shape[1])
+    #             for r, c in neighbors:
+    #                 if board[r, c] == 0 and (r, c) not in adjacent_guesses:
+    #                     adjacent_guesses.append((r, c))
+    #
+    # if adjacent_guesses:
+    #     r, c = adjacent_guesses[0]
+    #     return [('guess', r, c)]
 
     # No moves found, game likely finished or no deductive moves remain
     return None
