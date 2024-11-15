@@ -67,6 +67,10 @@ def main_loop():
         try:
             moves = solve_board(board, num_columns, num_rows, n_mines)
             for move, row, col in moves:
+                if keyboard.is_pressed('q'):
+                    print("Q pressed, stopping the automation...")
+                    running = False
+                    break
                 click_cell(move, row, col, top_left_corner)
                 print(f"Performing action: {move} at ({row}, {col})")
         except Exception as e:
