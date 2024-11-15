@@ -12,6 +12,7 @@ SSIM_THRESHOLD = 0.6  # SSIM threshold to consider two images as identical
 IMAGE_DIR = "images"
 
 BOARD_SIZES = [(9, 9), (11, 12), (13, 15), (14, 18), (16, 20)]
+BOARD_MINES = [10, 19, 32, 47, 66]
 
 def compare_image(cell_image, reference_image_path):
     """Compare a cell image with a reference image and return the similarity score."""
@@ -101,4 +102,4 @@ def process_board(image, last_valid_board=None):
                     # Process cell
                     board[row, col] = process_single_cell(image, row, col, top_left, last_valid_board)
 
-        return board, top_left
+        return board, top_left, num_rows, num_columns, BOARD_MINES[BOARD_SIZES.index((num_rows, num_columns))]
