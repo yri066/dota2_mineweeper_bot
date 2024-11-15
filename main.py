@@ -72,7 +72,6 @@ def main_loop():
                     running = False
                     break
                 click_cell(move, row, col, top_left_corner)
-                print(f"Performing action: {move} at ({row}, {col})")
         except Exception as e:
             print("Error solving board, taking screenshot and stopping the automation...:", e)
             pyautogui.screenshot("last_board.png")

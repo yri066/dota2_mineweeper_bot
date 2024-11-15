@@ -69,7 +69,6 @@ def solve_board(board, width, height, n_mines):
         for i in range(0, len(moves), 2):
             row = moves[i] // width
             col = moves[i] % width
-            print(moves[i], moves[i + 1])
             if moves[i + 1] == 0:
                 safe_actions.append(("click", row, col))
             elif moves[i + 1] == 1:
