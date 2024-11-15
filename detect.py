@@ -54,6 +54,22 @@ def compare_image(cell_image, reference_image_path):
     similarity = ssim(reference_image, cell_image_resized)
     return similarity
 
+def find_reference_image(screen_image, reference_image_path):
+    """Find the position of the reference image on the screen."""
+    reference_image = cv2.imread(reference_image_path, cv2.IMREAD_GRAYSCALE)
+    screen_gray = cv2.cvtColor(screen_image, cv2.COLOR_BGR2GRAY)
+
+    # Perform template matching
+    result = cv2.matchTemplate(screen_gray, reference_image, cv2.TM_CCOEFF_NORMED)
+    _, max_val, _, max_loc = cv2.minMaxLoc(result)
+
+    # Define a threshold for match quality
+    threshold = 0.5
+    if max_val >= threshold:
+        return max_loc  # Top-left corner of the detected reference image
+    else:
+        raise ValueError("Reference image not found on screen.")
+
 def identify_cell_image(cell_image):
     """Identify the cell value by comparing with images in the 'images' folder using SSIM."""
     highest_similarity = 0
@@ -90,6 +106,14 @@ def process_single_cell(image, row, col, top_left, cell_size, cell_spacing, offs
     return cell_value
 
 def process_board(image, last_valid_board=None):
+    reference_position = find_reference_image(image, "images/dota2_logo.png")
+
+    """Process the board within a search area starting from the reference position."""
+    search_x, search_y = reference_position
+
+    # Define the ROI for board detection starting from the reference position
+    roi = image[search_y:image.shape[0], search_x:image.shape[1]]
+
     top_left_color = (17, 29, 39)
     bottom_right_color = (17, 29, 39)
     top_left = None
@@ -98,19 +122,23 @@ def process_board(image, last_valid_board=None):
     # Create a copy of the image for debugging
     debug_image = image.copy()
 
+    # draw a rectangle around the reference position
+    cv2.rectangle(debug_image, reference_position, (reference_position[0] + 50, reference_position[1] + 50), (0, 0, 255), 2)
+
     # Calculate resolution-dependent dimensions and offsets
     cell_size, cell_spacing = calculate_relative_dimensions(image.shape[1], image.shape[0])
     board_x_offset, board_y_offset = calculate_board_offsets(image.shape[1], image.shape[0])
     cell_x_offset, cell_y_offset = calculate_cell_offsets(image.shape[1], image.shape[0])
 
-    # Locate the grid boundaries
-    for y in range(image.shape[0]):
-        for x in range(image.shape[1]):
-            pixel = image[y, x]
-            if not top_left and pixel[0] == top_left_color[0] and pixel[1] == top_left_color[1] and pixel[2] == top_left_color[2]:
-                top_left = (x, y)
-            if pixel[0] == bottom_right_color[0] and pixel[1] == bottom_right_color[1] and pixel[2] == bottom_right_color[2]:
-                bottom_right = (x, y)
+    for y in range(roi.shape[0]):
+        for x in range(roi.shape[1]):
+            pixel = roi[y, x]
+            if not top_left and pixel[0] == top_left_color[0] and pixel[1] == top_left_color[1] and pixel[2] == \
+                    top_left_color[2]:
+                top_left = (search_x + x, search_y + y)
+            if pixel[0] == bottom_right_color[0] and pixel[1] == bottom_right_color[1] and pixel[2] == \
+                    bottom_right_color[2]:
+                bottom_right = (search_x + x, search_y + y)
 
     if top_left and bottom_right:
         # Adjust grid boundaries using resolution-dependent offsets
