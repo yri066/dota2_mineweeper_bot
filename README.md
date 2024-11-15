@@ -20,11 +20,10 @@ You can run it from source code with Python, or execute the compiled binary.
 
 ## Features
 - Automatic solver for Dota 2 Act IV Minesweeper minigame
-- It can solve all levels, but it's not perfect and can make mistakes
-- It is probability dependent, so it can get stuck if there is no clear move, then it will use ability
+- It can be used to solve all levels, but it's not perfect and can not make complex moves.
 - It will prioritize to activate clocks and mana vials if possible
 - It's not a cheat, it's just a tool to help you solve the minigame
-- It's not a bot, it's a script that simulates mouse clicks
+- It's not an integraged bot, it's a script that simulates mouse clicks
 
 ## Notes
 - It helps to go through easiest minesweeper patterns only: when around number all fields are 100% mines or 100% are empty fields.
