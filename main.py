@@ -94,3 +94,4 @@ keyboard.add_hotkey('s', lambda: start_game())
 print("Press 's' to start the bot, hold 'q' to pause it. Press 'ctrl+c' to stop.")
 # Keep the script running to listen for keyboard events
 keyboard.wait('ctrl+c')
+input()
