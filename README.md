@@ -3,20 +3,29 @@ Automatic solver for Dota 2 Act IV Minesweeper minigame
 
 You can run it from source code with Python, or execute the compiled binary.
 
-## Requirements
-- Python 3.11+ (https://www.python.org/downloads/)
-- Pip (https://pip.pypa.io/en/stable/installation/)
+## Requirements if run from .exe
 - Dota 2 with FullHD resolution: 1920x1080
 
-## How to install
+## Requirements if run from source code.
+- Dota 2 with FullHD resolution: 1920x1080
+- Python 3.11+ (https://www.python.org/downloads/)
+- Pip (https://pip.pypa.io/en/stable/installation/)
+
+## How to install from .exe
+1. Clone the repository
+2. Run `run.exe` file in the directory with other files.
+   
+## How to install from source code 
 1. Clone the repository
 2. Install the required packages with `pip install -r requirements.txt`
 3. Run the script with `python main.py`
-4. Launch Dota 2 and start the Minesweeper minigame
-5. Press the first field in the game (bot cannot start)
-6. Press 's' to start the bot, hold 'q' to stop it (should stop after the level is completed)
-7. Select the new level, press on the first field and click "s" again ...
-8. Click 'ctrl+c' to terminate completely
+
+## How to use
+1. Launch Dota 2 and start the Minesweeper minigame.
+2. Launch bot.
+3. Press the first field in the game (bot cannot start)
+4. Press 's' to start the bot, hold 'q' to stop it (should stop after the level is completed)
+5. Click 'ctrl+c' to terminate completely
 
 ## Features
 - Automatic solver for Dota 2 Act IV Minesweeper minigame
