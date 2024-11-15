@@ -26,5 +26,5 @@ You can run it from source code with Python, or execute the compiled binary.
 - It's not a bot, it's a script that simulates mouse clicks
 
 ## Notes
-- It helps to go through easiest minesweeper patterns only: when around number all fields are 100% mines or 100% enpty fields.
-- It is intended to be used with human interaction. Hold Q to stop it, then press win+prntScr to take screenshot and esc. Find complez moves, afterwards click S again to continue bot. 
+- It helps to go through easiest minesweeper patterns only: when around number all fields are 100% mines or 100% are empty fields.
+- It is intended to be used with human interaction. When its stuck over 2-3 seconds - Hold Q to stop it, then press win+prntScr to take screenshot and esc to pause the game. Find following moves on screenshot yourself, afterwards click S again to continue bot. 
