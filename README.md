@@ -24,3 +24,7 @@ You can run it from source code with Python, or execute the compiled binary.
 - It will prioritize to activate clocks and mana vials if possible
 - It's not a cheat, it's just a tool to help you solve the minigame
 - It's not a bot, it's a script that simulates mouse clicks
+
+## Notes
+- It helps to go through easiest minesweeper patterns only: when around number all fields are 100% mines or 100% enpty fields.
+- It is intended to be used with human interaction. Hold Q to stop it, then press win+prntScr to take screenshot and esc. Find complez moves, afterwards click S again to continue bot. 
