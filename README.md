@@ -36,5 +36,6 @@ You can run it from source code with Python, or execute the compiled binary.
 - It's not an integrated bot, it's a script that simulates mouse clicks
 
 ## Notes
-- The bot will behave unexpectedly when "6" appears on the board. Its better to stop it, resolve all tiles around 6 and continue the bot. 
+- The bot will behave unexpectedly when "6" appears on the board. Its better to stop it, resolve all tiles around 6 and continue the bot.
+- In case of "board not detected" messages and bot not working, try changin in game resolution to 1920x1080 and different options: fullscreen/borderless fulscreen window
 - Improvements to the bot via PRs are welcome!
