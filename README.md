@@ -6,6 +6,7 @@ You can run it from source code with Python, or execute the compiled binary.
 ## Requirements
 - Python 3.11+ (https://www.python.org/downloads/)
 - Pip (https://pip.pypa.io/en/stable/installation/)
+- Dota 2 with FullHD resolution: 1920x1080
 
 ## How to install
 1. Clone the repository
@@ -27,4 +28,5 @@ You can run it from source code with Python, or execute the compiled binary.
 
 ## Notes
 - It helps to go through easiest minesweeper patterns only: when around number all fields are 100% mines or 100% are empty fields.
-- It is intended to be used with human interaction. When its stuck over 2-3 seconds - Hold Q to stop it, then press win+prntScr to take screenshot and esc to pause the game. Find following moves on screenshot yourself, afterwards click S again to continue bot. 
+- It is intended to be used with human interaction. When its stuck over 2-3 seconds - Hold Q to stop it, then press win+prntScr to take screenshot and esc to pause the game. Find following "non-obvious" moves on screenshot yourself, afterwards click S again to continue bot. 
+- Improvements to the bot via PRs are welcome!
