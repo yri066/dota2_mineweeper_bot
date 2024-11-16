@@ -4,10 +4,10 @@ Automatic solver for Dota 2 Act IV Minesweeper minigame
 You can run it from source code with Python, or execute the compiled binary.
 
 ## Requirements if run from .exe
-- Dota 2 with FullHD resolution: 1920x1080
+- Dota 2 with FullHD resolution: 1920x1080 (no HDR allowed)
 
 ## Requirements if run from source code.
-- Dota 2 with FullHD resolution: 1920x1080
+- Dota 2 with FullHD resolution: 1920x1080 (no HDR allowed)
 - Python 3.11+ (https://www.python.org/downloads/)
 - Pip (https://pip.pypa.io/en/stable/installation/)
 
