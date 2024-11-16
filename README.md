@@ -4,10 +4,10 @@ Automatic solver for Dota 2 Act IV Minesweeper minigame
 You can run it from source code with Python, or execute the compiled binary.
 
 ## Requirements if run from .exe
-- Dota 2 with FullHD resolution: 1920x1080 (no HDR allowed)
+- Dota 2 with FullHD resolution: 1920x1080
 
 ## Requirements if run from source code.
-- Dota 2 with FullHD resolution: 1920x1080 (no HDR allowed)
+- Dota 2 with FullHD resolution: 1920x1080
 - Python 3.11+ (https://www.python.org/downloads/)
 - Pip (https://pip.pypa.io/en/stable/installation/)
 
@@ -38,4 +38,5 @@ You can run it from source code with Python, or execute the compiled binary.
 ## Notes
 - The bot will behave unexpectedly when "6" appears on the board. Its better to stop it, resolve all tiles around 6 and continue the bot.
 - In case of "board not detected" messages and bot not working, try changing in-game resolution to native screen resolution and different options: fullscreen/borderless window
+- The bot will not work with HDR enabled. 
 - Improvements to the bot via PRs are welcome!
