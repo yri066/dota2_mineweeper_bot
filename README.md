@@ -8,7 +8,7 @@ You can run it from source code with Python, or execute the compiled binary.
 
 ## Requirements if run from source code.
 - Dota 2 with FullHD resolution: 1920x1080
-- Python 3.11+ (https://www.python.org/downloads/)
+- Python 3.12 **(3.13 not supported by scikit-image)** (https://www.python.org/downloads/)
 - Pip (https://pip.pypa.io/en/stable/installation/)
 
 ## How to install from .exe
