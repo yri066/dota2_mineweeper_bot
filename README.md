@@ -37,6 +37,6 @@ You can run it from source code with Python, or execute the compiled binary.
 
 ## Notes
 - The bot will behave unexpectedly when "6" appears on the board. Its better to stop it, resolve all tiles around 6 and continue the bot.
-- In case of "board not detected" messages and bot not working, try changing in-game resolution to native screen resolution and different options: fullscreen/borderless window
+- In case of "board not detected" messages and bot not working, try changing monitor resolution to 1920 x 1080.
 - The bot will not work with HDR enabled. 
 - Improvements to the bot via PRs are welcome!
