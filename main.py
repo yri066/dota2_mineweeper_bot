@@ -59,6 +59,7 @@ def main_loop():
             break
         pyautogui.moveTo(10, 10)
         img = capture_board()
+        keyboard.press_and_release('f9')
 
         try:
             # Process the new screenshot to get the current board state
@@ -74,6 +75,7 @@ def main_loop():
             continue
 
         # Find the next move based on the current board state
+        keyboard.press_and_release('f9')
         try:
             moves = solve_board(board, num_columns, num_rows, n_mines)
             for move, row, col in moves:
