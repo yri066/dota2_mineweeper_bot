@@ -75,9 +75,9 @@ def main_loop():
             continue
 
         # Find the next move based on the current board state
-        keyboard.press_and_release('f9')
         try:
             moves = solve_board(board, num_columns, num_rows, n_mines)
+            keyboard.press_and_release('f9')
             for move, row, col in moves:
                 if keyboard.is_pressed('q'):
                     print("Q pressed, stopping the automation...")
