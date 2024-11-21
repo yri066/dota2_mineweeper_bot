@@ -1,4 +1,5 @@
 from time import sleep
+import threading
 import cv2
 import pyautogui
 import numpy as np
@@ -8,6 +9,7 @@ from remote_solver import solve_board
 
 # Flag to control the start/stop of the loop
 running = False
+stop_flag = True
 
 # Reference resolution for Full HD (1920x1080)
 REFERENCE_WIDTH = 1920
@@ -53,10 +55,6 @@ def main_loop():
     cell_size, cell_spacing = calculate_relative_sizes()  # Calculate sizes relative to resolution
 
     while running:
-        if keyboard.is_pressed('q'):
-            print("Q pressed, stopping the automation...")
-            running = False
-            break
         pyautogui.moveTo(10, 10)
         img = capture_board()
         keyboard.press_and_release('f9')
@@ -78,9 +76,7 @@ def main_loop():
             moves = solve_board(board, num_columns, num_rows, n_mines)
             keyboard.press_and_release('f9')
             for move, row, col in moves:
-                if keyboard.is_pressed('q'):
-                    print("Q pressed, stopping the automation...")
-                    running = False
+                if not running:
                     break
                 click_cell(move, row, col, top_left_corner, cell_size, cell_spacing)
         except Exception as e:
@@ -99,9 +95,25 @@ def start_game():
         print("Starting Minesweeper automation...")
         main_loop()
 
+def listen_for_key():
+    global running
+    while stop_flag:
+        if keyboard.is_pressed('q'):
+            if running:
+                running = False
+                print("Q pressed, stopping the automation...")
+        sleep(0.01)
+
+
+listener_thread = threading.Thread(target=listen_for_key, daemon=True)
+listener_thread.start()
+
 # Start and stop the automation on specific key presses
 keyboard.add_hotkey('s', lambda: start_game())
 
 print("Press 's' to start the bot, hold 'q' to pause it. Press 'ctrl+c' to stop.")
 # Keep the script running to listen for keyboard events
 keyboard.wait('ctrl+c')
+
+stop_flag = False
+listener_thread.join()
