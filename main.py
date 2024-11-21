@@ -59,7 +59,7 @@ def main_loop():
             break
         pyautogui.moveTo(10, 10)
         img = capture_board()
-
+        keyboard.press_and_release('f9')
         try:
             # Process the new screenshot to get the current board state
             # Pass the last valid board as an optional parameter
@@ -76,6 +76,7 @@ def main_loop():
         # Find the next move based on the current board state
         try:
             moves = solve_board(board, num_columns, num_rows, n_mines)
+            keyboard.press_and_release('f9')
             for move, row, col in moves:
                 if keyboard.is_pressed('q'):
                     print("Q pressed, stopping the automation...")
